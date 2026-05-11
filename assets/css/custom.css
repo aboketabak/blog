@@ -1,88 +1,208 @@
-/* ===== STYLE MINITEL ===== */
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-:root {
-  --bg: #000080;
-  --text: #ffffff;
-  --accent: #ffff00;
-  --link: #00ffff;
-  --border: #00ffff;
-  --header-bg: #000033;
+/* Reset & base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  background-color: var(--bg) !important;
-  color: var(--text) !important;
-  font-family: 'Share Tech Mono', 'Courier New', monospace !important;
-  font-size: 15px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  line-height: 2;
+  color: #c0c0c0;
+  background: #000000;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 20px;
+  image-rendering: pixelated;
 }
 
+/* Scanlines effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.15) 2px,
+    rgba(0,0,0,0.15) 4px
+  );
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* Header */
+header {
+  border: 4px solid #0070d4;
+  padding: 20px;
+  margin-bottom: 30px;
+  position: relative;
+  background: #000033;
+}
+
+header::before {
+  content: '► SEGA';
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  background: #000;
+  color: #0070d4;
+  padding: 0 10px;
+  font-size: 10px;
+}
+
+/* Titres */
+h1 {
+  font-size: 1.4em;
+  color: #4ca4ff;
+  text-shadow: 3px 3px #000033, 0 0 20px #0070d4;
+  margin-bottom: 0.5em;
+  letter-spacing: 2px;
+}
+
+h2 {
+  font-size: 1em;
+  color: #ffcc00;
+  text-shadow: 2px 2px #664400;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  border-left: 4px solid #ffcc00;
+  padding-left: 10px;
+}
+
+h3 {
+  font-size: 0.85em;
+  color: #ff4444;
+  margin-top: 1.5em;
+}
+
+/* Navigation */
+nav {
+  margin-bottom: 2em;
+  padding: 10px;
+  border: 2px solid #333;
+  background: #0a0a1a;
+}
+
+nav::before {
+  content: 'SELECT ▼';
+  display: block;
+  color: #555;
+  font-size: 8px;
+  margin-bottom: 10px;
+}
+
+nav a {
+  color: #4ca4ff;
+  text-decoration: none;
+  margin-right: 2em;
+  font-size: 0.85em;
+}
+
+nav a::before { content: '► '; color: #ffcc00; }
+nav a:hover { color: #ffcc00; }
+
+/* Articles */
+article {
+  margin-bottom: 2em;
+  padding: 15px;
+  border: 2px solid #1a1a4a;
+  background: #05050f;
+  position: relative;
+}
+
+article::before {
+  content: 'STAGE';
+  position: absolute;
+  top: -10px;
+  right: 15px;
+  background: #000;
+  color: #555;
+  font-size: 8px;
+  padding: 0 8px;
+}
+
+/* Date */
+.post-date {
+  font-size: 0.75em;
+  color: #ff4444;
+  margin-bottom: 1em;
+}
+.post-date::before { content: '📅 '; }
+
+/* Liens */
 a {
-  color: var(--link) !important;
+  color: #4ca4ff;
   text-decoration: none;
 }
-
 a:hover {
-  color: var(--accent) !important;
-  text-decoration: underline;
+  color: #ffcc00;
+  text-shadow: 0 0 8px #ffcc00;
 }
 
-.site-header {
-  background-color: var(--header-bg) !important;
-  border-bottom: 2px solid var(--accent) !important;
+/* Paragraphes */
+p { margin-bottom: 1.5em; }
+
+/* Code */
+code {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.8em;
+  color: #00ff88;
+  background: #001a0d;
+  padding: 2px 8px;
+  border: 1px solid #00ff88;
 }
 
-.site-title, .site-title:visited {
-  color: var(--accent) !important;
-  font-size: 20px !important;
-  letter-spacing: 4px;
-  text-transform: uppercase;
+pre {
+  background: #001a0d;
+  border: 2px solid #00ff88;
+  padding: 15px;
+  overflow-x: auto;
+  margin: 1.5em 0;
+  color: #00ff88;
 }
 
-.site-nav .page-link {
-  color: var(--link) !important;
-  letter-spacing: 2px;
-}
-
-.site-footer {
-  background-color: var(--header-bg) !important;
-  border-top: 2px solid var(--accent) !important;
-  color: var(--link) !important;
-}
-
-.post-title, h1, h2, h3 {
-  color: var(--accent) !important;
-  letter-spacing: 2px;
-}
-
-.post-list li {
-  border-left: 3px solid var(--accent);
-  padding-left: 12px;
+/* Score / Stats bar */
+.stats-bar {
+  display: flex;
+  justify-content: space-between;
+  background: #000033;
+  border: 2px solid #0070d4;
+  padding: 8px 15px;
   margin-bottom: 20px;
+  font-size: 0.75em;
+  color: #4ca4ff;
 }
 
-.post-meta {
-  color: #00ffff !important;
-  font-size: 12px;
+/* Footer */
+footer {
+  margin-top: 3em;
+  padding: 15px;
+  border-top: 4px solid #0070d4;
+  font-size: 0.75em;
+  color: #333;
+  text-align: center;
 }
 
-.post-content p, .post-content li {
-  color: #ffffff;
-  line-height: 1.8;
+footer::after {
+  content: '\A► INSERT COIN ◄';
+  display: block;
+  color: #ffcc00;
+  margin-top: 10px;
+  animation: blink 1s step-end infinite;
+  white-space: pre;
 }
 
-code, pre {
-  background-color: #000033 !important;
-  color: #00ff00 !important;
-  border: 1px solid #00ffff !important;
-  font-family: 'Share Tech Mono', monospace !important;
+@keyframes blink {
+  50% { opacity: 0; }
 }
 
-blockquote {
-  border-left: 4px solid #ffff00 !important;
-  color: #00ffff !important;
-}
-
-hr {
-  border-color: var(--accent) !important;
-}
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #0070d4; }
