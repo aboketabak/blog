@@ -1,0 +1,88 @@
+/* ===== STYLE MINITEL ===== */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root {
+  --bg: #000080;
+  --text: #ffffff;
+  --accent: #ffff00;
+  --link: #00ffff;
+  --border: #00ffff;
+  --header-bg: #000033;
+}
+
+body {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+  font-family: 'Share Tech Mono', 'Courier New', monospace !important;
+  font-size: 15px;
+}
+
+a {
+  color: var(--link) !important;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent) !important;
+  text-decoration: underline;
+}
+
+.site-header {
+  background-color: var(--header-bg) !important;
+  border-bottom: 2px solid var(--accent) !important;
+}
+
+.site-title, .site-title:visited {
+  color: var(--accent) !important;
+  font-size: 20px !important;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.site-nav .page-link {
+  color: var(--link) !important;
+  letter-spacing: 2px;
+}
+
+.site-footer {
+  background-color: var(--header-bg) !important;
+  border-top: 2px solid var(--accent) !important;
+  color: var(--link) !important;
+}
+
+.post-title, h1, h2, h3 {
+  color: var(--accent) !important;
+  letter-spacing: 2px;
+}
+
+.post-list li {
+  border-left: 3px solid var(--accent);
+  padding-left: 12px;
+  margin-bottom: 20px;
+}
+
+.post-meta {
+  color: #00ffff !important;
+  font-size: 12px;
+}
+
+.post-content p, .post-content li {
+  color: #ffffff;
+  line-height: 1.8;
+}
+
+code, pre {
+  background-color: #000033 !important;
+  color: #00ff00 !important;
+  border: 1px solid #00ffff !important;
+  font-family: 'Share Tech Mono', monospace !important;
+}
+
+blockquote {
+  border-left: 4px solid #ffff00 !important;
+  color: #00ffff !important;
+}
+
+hr {
+  border-color: var(--accent) !important;
+}
