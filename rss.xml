@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mon Blog</title>
+    <link>https://votresite.com</link>
+    <description>Voyages · Technologie · Lifestyle</description>
+    <language>fr</language>
+    <lastBuildDate>Fri, 12 Jan 2024 09:00:00 +0100</lastBuildDate>
+    <atom:link href="https://votresite.com/rss.xml" rel="self" type="application/rss+xml"/>
+
+    <item>
+      <title>Les tendances tech à suivre en 2024</title>
+      <link>https://votresite.com/articles/2024-01-12-tendances-tech-2024.html</link>
+      <description>L'intelligence artificielle continue de transformer notre quotidien à une vitesse impressionnante. Des assistants virtuels aux voitures autonomes, découvrez les innovations qui vont marquer cette année.</description>
+      <pubDate>Fri, 12 Jan 2024 09:00:00 +0100</pubDate>
+      <category>Technologie</category>
+      <author>Alice</author>
+      <guid>https://votresite.com/articles/2024-01-12-tendances-tech-2024.html</guid>
+    </item>
+
+    <item>
+      <title>Top 10 des destinations à découvrir cette année</title>
+      <link>https://votresite.com/articles/2024-01-08-destinations-a-decouvrir.html</link>
+      <description>Du Japon mystérieux aux plages paradisiaques de la Thaïlande, en passant par les majestueuses fjords de Norvège, voici notre sélection des plus belles destinations pour vos prochaines aventures.</description>
+      <pubDate>Mon, 08 Jan 2024 09:00:00 +0100</pubDate>
+      <category>Voyages</category>
+      <author>Marc</author>
+      <guid>https://votresite.com/articles/2024-01-08-destinations-a-decouvrir.html</guid>
+    </item>
+
+    <item>
+      <title>Comment améliorer sa productivité au quotidien</title>
+      <link>https://votresite.com/articles/2024-01-03-ameliorer-sa-productivite.html</link>
+      <description>Être productif ne signifie pas travailler plus, mais travailler mieux. Découvrez des techniques simples et efficaces pour organiser votre temps, gérer vos priorités et atteindre vos objectifs.</description>
+      <pubDate>Wed, 03 Jan 2024 09:00:00 +0100</pubDate>
+      <category>Lifestyle</category>
+      <author>Sophie</author>
+      <guid>https://votresite.com/articles/2024-01-03-ameliorer-sa-productivite.html</guid>
+    </item>
+
+  </channel>
+</rss>
