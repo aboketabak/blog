@@ -1,226 +1,80 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="alternate" type="application/rss+xml" title="Arthur Devriendt" href="/rss.xml">
-    <title>Mon Blog</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<!DOCTYPE html> <html lang="fr"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Mon Blog</title> <style> * { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background-color: #faf9f7; color: #2d2d2d; line-height: 1.6; } header { max-width: 680px; margin: 60px auto 20px; padding: 0 20px; } header h1 { font-size: 2em; font-weight: 700; color: #2d2d2d; letter-spacing: -0.02em; } header p { font-size: 0.95em; color: #6b6560; margin-top: 4px; } nav { max-width: 680px; margin: 16px auto 30px; padding: 0 20px 16px; display: flex; gap: 20px; border-bottom: 1px solid #ebe8e3; } nav a { text-decoration: none; color: #a09a92; font-size: 0.85em; transition: color 0.2s; } nav a:hover, nav a.active { color: #c05b3f; } main { max-width: 680px; margin: 0 auto; padding: 0 20px; } .article { margin-bottom: 24px; } .article-meta { font-size: 0.78em; color: #a09a92; margin-bottom: 8px; display: flex; gap: 12px; } .article-meta .categorie { color: #c05b3f; font-weight: 500; } .article h2 { font-size: 1.25em; font-weight: 600; color: #2d2d2d; margin-bottom: 8px; line-height: 1.35; } .article h2 a { text-decoration: none; color: inherit; } .article h2 a:hover { color: #c05b3f; } .article p { font-size: 0.95em; color: #6b6560; line-height: 1.75; text-align: justify; } .lire-plus { display: inline-block; margin-top: 10px; font-size: 0.82em; color: #c05b3f; text-decoration: none; border-bottom: 1px solid transparent; } .lire-plus:hover { border-bottom-color: #c05b3f; } .divider { border: none; border-top: 1px solid #ebe8e3; margin-bottom: 24px; } footer { max-width: 680px; margin: 40px auto 40px; padding: 20px 20px 0; border-top: 1px solid #ebe8e3; font-size: 0.8em; color: #a09a92; display: flex; justify-content: space-between; align-items: center; } footer a { color: #a09a92; text-decoration: none; } footer a:hover { color: #c05b3f; } .newsletter {
+    margin: 40px 0;
+    padding: 28px 32px;
+    background-color: #f0ede8;
+    border-radius: 6px;
+}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background-color: #faf9f7;
-            color: #2d2d2d;
-            line-height: 1.6;
-        }
+.newsletter-label {
+    font-size: 0.78em;
+    color: #c05b3f;
+    font-weight: 500;
+    text-align: left;
+    margin-bottom: 8px;
+}
 
-        header {
-            max-width: 680px;
-            margin: 60px auto 20px;
-            padding: 0 20px;
-        }
+.newsletter h2 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #2d2d2d;
+    margin-bottom: 8px;
+}
 
-        header h1 {
-            font-size: 2em;
-            font-weight: 700;
-            color: #2d2d2d;
-            letter-spacing: -0.02em;
-        }
+.newsletter p {
+    font-size: 0.88em;
+    color: #6b6560;
+    margin-bottom: 16px;
+}
 
-        header p {
-            font-size: 0.85em;
-            color: #a09a92;
-            margin-top: 4px;
-        }
+.newsletter-field {
+    display: flex;
+    gap: 8px;
+}
 
-        nav {
-            max-width: 680px;
-            margin: 16px auto 30px;
-            padding: 0 20px 16px;
-            display: flex;
-            gap: 20px;
-            border-bottom: 1px solid #ebe8e3;
-        }
+.newsletter-field input {
+    flex: 1;
+    padding: 9px 14px;
+    font-size: 0.88em;
+    font-family: inherit;
+    border: 1px solid #d9d4ce;
+    border-radius: 4px;
+    background-color: #faf9f7;
+    color: #2d2d2d;
+    outline: none;
+    transition: border-color 0.2s;
+}
 
-        nav a {
-            text-decoration: none;
-            color: #a09a92;
-            font-size: 0.85em;
-            transition: color 0.2s;
-        }
+.newsletter-field input:focus {
+    border-color: #c05b3f;
+}
 
-        nav a:hover,
-        nav a.active {
-            color: #c05b3f;
-        }
+.newsletter-field button {
+    padding: 9px 18px;
+    font-size: 0.88em;
+    font-family: inherit;
+    background-color: #c05b3f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
 
-        main {
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .article {
-            margin-bottom: 24px;
-        }
-
-        .article-meta {
-            font-size: 0.78em;
-            color: #a09a92;
-            margin-bottom: 8px;
-            display: flex;
-            gap: 12px;
-        }
-
-        .article-meta .categorie {
-            color: #c05b3f;
-            font-weight: 500;
-        }
-
-        .article h2 {
-            font-size: 1.25em;
-            font-weight: 600;
-            color: #2d2d2d;
-            margin-bottom: 8px;
-            line-height: 1.35;
-        }
-
-        .article h2 a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .article h2 a:hover {
-            color: #c05b3f;
-        }
-
-        .article p {
-            font-size: 0.95em;
-            color: #6b6560;
-            line-height: 1.75;
-            text-align: justify;
-        }
-
-        .lire-plus {
-            display: inline-block;
-            margin-top: 10px;
-            font-size: 0.82em;
-            color: #c05b3f;
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-        }
-
-        .lire-plus:hover {
-            border-bottom-color: #c05b3f;
-        }
-
-        .divider {
-            border: none;
-            border-top: 1px solid #ebe8e3;
-            margin-bottom: 24px;
-        }
-
-        footer {
-            max-width: 680px;
-            margin: 40px auto 40px;
-            padding: 20px 20px 0;
-            border-top: 1px solid #ebe8e3;
-            font-size: 0.8em;
-            color: #a09a92;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        footer a {
-            color: #a09a92;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            color: #c05b3f;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>Notizbuch</h1>
-        <p>Carnet sur la politique allemande et autres curiosités</p>
-    </header>
-
-    <nav>
-        <a href="#" class="active">Tous</a>
-        <a href="#">Technologie</a>
-        <a href="#">Voyages</a>
-        <a href="#">Lifestyle</a>
-    </nav>
-
-    <main>
-
-        <article class="article">
-            <div class="article-meta">
-                <span class="categorie">Technologie</span>
-                <span>12 janvier 2024</span>
-                <span>Alice</span>
-            </div>
-            <h2><a href="#">Les tendances tech à suivre en 2024</a></h2>
-            <p>
-                L'intelligence artificielle continue de transformer notre quotidien à une vitesse
-                impressionnante. Des assistants virtuels aux voitures autonomes, découvrez les
-                innovations qui vont marquer cette année et changer notre façon de vivre.
-            </p>
-            <a href="#" class="lire-plus">Lire la suite →</a>
-        </article>
-
-        <hr class="divider">
-
-        <article class="article">
-            <div class="article-meta">
-                <span class="categorie">Voyages</span>
-                <span>8 janvier 2024</span>
-                <span>Marc</span>
-            </div>
-            <h2><a href="#">Top 10 des destinations à découvrir cette année</a></h2>
-            <p>
-                Du Japon mystérieux aux plages paradisiaques de la Thaïlande, en passant par les
-                majestueuses fjords de Norvège, voici notre sélection des plus belles destinations
-                pour vos prochaines aventures.
-            </p>
-            <a href="#" class="lire-plus">Lire la suite →</a>
-        </article>
-
-        <hr class="divider">
-
-        <article class="article">
-            <div class="article-meta">
-                <span class="categorie">Lifestyle</span>
-                <span>3 janvier 2024</span>
-                <span>Sophie</span>
-            </div>
-            <h2><a href="#">Comment améliorer sa productivité au quotidien</a></h2>
-            <p>
-                Être productif ne signifie pas travailler plus, mais travailler mieux. Découvrez
-                des techniques simples et efficaces pour organiser votre temps, gérer vos priorités
-                et atteindre vos objectifs sans vous épuiser.
-            </p>
-            <a href="#" class="lire-plus">Lire la suite →</a>
-        </article>
-
-    </main>
-
-    <footer>
-        <span>© 2024 Mon Blog</span>
-        <div style="display:flex; gap:16px;">
-            <a href="#">Contact</a>
-            <a href="#">À propos</a>
+.newsletter-field button:hover {
+    background-color: #a84e36;
+}</style> </head> <body> <header> <h1>Notizbuch</h1> <p>Carnet sur la politique allemande et autres curiosités — par Arthur Devriendt</p> </header> <nav> <a href="#" class="active">Tous</a> <a href="#">Technologie</a> <a href="#">Voyages</a> <a href="#">Lifestyle</a> </nav> <main>
+ <article class="article"> <div class="article-meta"> <span class="categorie">Technologie</span> <span>12 janvier 2024</span> <span>Alice</span> </div> <h2><a href="#">Les tendances tech à suivre en 2024</a></h2> <p> L'intelligence artificielle continue de transformer notre quotidien à une vitesse impressionnante. Des assistants virtuels aux voitures autonomes, découvrez les innovations qui vont marquer cette année et changer notre façon de vivre. </p> <a href="#" class="lire-plus">Lire la suite →</a> </article> <hr class="divider"> 
+ <article class="article"> <div class="article-meta"> <span class="categorie">Voyages</span> <span>8 janvier 2024</span> <span>Marc</span> </div> <h2><a href="#">Top 10 des destinations à découvrir cette année</a></h2> <p> Du Japon mystérieux aux plages paradisiaques de la Thaïlande, en passant par les majestueuses fjords de Norvège, voici notre sélection des plus belles destinations pour vos prochaines aventures. </p> <a href="#" class="lire-plus">Lire la suite →</a> </article> <hr class="divider"> <article class="article"> <div class="article-meta"> <span class="categorie">Lifestyle</span> <span>3 janvier 2024</span> <span>Sophie</span> </div> <h2><a href="#">Comment améliorer sa productivité au quotidien</a></h2> <p> Être productif ne signifie pas travailler plus, mais travailler mieux. Découvrez des techniques simples et efficaces pour organiser votre temps, gérer vos priorités et atteindre vos objectifs sans vous épuiser. </p> <a href="#" class="lire-plus">Lire la suite →</a> </article> 
+ <hr class="divider">
+  <div class="newsletter">
+    <p class="newsletter-label"><b>S'abonner au blog</b></p>
+    <p>Abonnez-vous pour recevoir les articles directement dans votre boîte mail dès leur parution. Pas de spam, pas de traceurs. Un flux RSS est également disponible.</p>
+    <form action="https://sibforms.com/xxxxxx" method="POST">
+        <div class="newsletter-field">
+            <input type="email" name="EMAIL" placeholder="votre@email.com" required>
+            <button type="submit">S'abonner</button>
         </div>
-    </footer>
-
-</body>
-</html>
+    </form>
+</div>
+ 
+ </main> <footer> <span>© 2024 Mon Blog</span> <div style="display:flex; gap:16px;"> <a href="#">Contact</a> <a href="#">À propos</a> </div> </footer> </body> </html>
