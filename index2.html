@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DISPATCH</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #fff;
+    color: #111;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 0 24px;
+  }
+
+  header {
+    margin-bottom: 60px;
+  }
+
+  h1 {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: #FF5C00;
+    margin-bottom: 10px;
+  }
+
+  header p {
+    font-size: 11px;
+    opacity: 0.4;
+  }
+
+  .edition {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 14px 0;
+    border-top: 1px solid #e5e5e5;
+    text-decoration: none;
+    color: #111;
+  }
+
+  .edition:last-child {
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .edition:hover .edition-title {
+    color: #FF5C00;
+  }
+
+  .edition-title {
+    font-size: 13px;
+  }
+
+  .edition-meta {
+    font-size: 10px;
+    opacity: 0.35;
+    white-space: nowrap;
+    margin-left: 24px;
+  }
+
+  /* --- Formulaire d'abonnement --- */
+  .subscribe {
+    margin-top: 60px;
+    padding: 28px;
+    border: 1px solid #e5e5e5;
+  }
+
+  .subscribe-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .subscribe-hint {
+    font-size: 10px;
+    opacity: 0.4;
+    margin-bottom: 16px;
+  }
+
+  .subscribe-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .subscribe-input {
+    flex: 1;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    padding: 10px 12px;
+    border: 1px solid #e5e5e5;
+    background: #fff;
+    color: #111;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .subscribe-input::placeholder {
+    opacity: 0.3;
+  }
+
+  .subscribe-input:focus {
+    border-color: #FF5C00;
+  }
+
+  .subscribe-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    background: #FF5C00;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+
+  .subscribe-btn:hover {
+    background: #e04e00;
+  }
+  /* --- Fin formulaire --- */
+
+  footer {
+    margin-top: 60px;
+  }
+
+  footer a {
+    font-size: 11px;
+    color: #111;
+    opacity: 0.35;
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    opacity: 1;
+    color: #FF5C00;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Notizbuch</h1>
+  <p>Carnet sur l'actualité sociale allemande — par Arthur Devriendt</p>
+</header>
+
+<main>
+  <a class="edition" href="#">
+    <span class="edition-title">No. 12 — Le silence des algorithmes</span>
+    <span class="edition-meta">14 jan. 2025</span>
+  </a>
+  <a class="edition" href="#">
+    <span class="edition-title">No. 11 — Ce que l'on efface</span>
+    <span class="edition-meta">7 jan. 2025</span>
+  </a>
+  <a class="edition" href="#">
+    <span class="edition-title">No. 10 — Cartographies du vide</span>
+    <span class="edition-meta">31 déc. 2024</span>
+  </a>
+  <a class="edition" href="#">
+    <span class="edition-title">No. 09 — Infrastructures invisibles</span>
+    <span class="edition-meta">24 déc. 2024</span>
+  </a>
+  <a class="edition" href="#">
+    <span class="edition-title">No. 08 — Pratiques du fragment</span>
+    <span class="edition-meta">17 déc. 2024</span>
+  </a>
+  <a class="edition" href="#">
+    <span class="edition-title">No. 07 — Mémoire volatile</span>
+    <span class="edition-meta">10 déc. 2024</span>
+  </a>
+</main>
+
+<!-- Formulaire d'abonnement -->
+<div class="subscribe">
+  <span class="subscribe-label">S'abonner</span>
+  <p class="subscribe-hint">Chaque semaine dans votre boîte mail. Gratuit.</p>
+  <form class="subscribe-row" action="#" method="post">
+    <input
+      class="subscribe-input"
+      type="email"
+      name="email"
+      placeholder="votre@email.com"
+      required
+      autocomplete="email"
+    />
+    <button class="subscribe-btn" type="submit">S'abonner →</button>
+  </form>
+</div>
+
+<footer>
+  <a href="about.html">À propos & contact</a>
+</footer>
+
+</body>
+</html>
