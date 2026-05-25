@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notizbuch</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #fff;
+    color: #111;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 0 24px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: #FF5C00;
+    line-height: 1;
+  }
+
+  /* ── ABOUT STRIP ── */
+  .about-strip {
+    margin-bottom: 60px;
+    padding: 24px;
+    border: 1px solid #e5e5e5;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto;
+    gap: 16px 24px;
+    align-items: start;
+  }
+
+  .about-photo {
+    grid-column: 1;
+    grid-row: 1;
+    flex-shrink: 0;
+    width: 68px;
+    height: 68px;
+    overflow: hidden;
+    border: 1px solid #e5e5e5;
+    border-radius: 2px;
+  }
+
+  .about-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    filter: grayscale(25%);
+    transition: filter 0.2s;
+  }
+
+  .about-photo img:hover { filter: grayscale(0%); }
+
+  .about-strip p {
+    font-size: 11px;
+    line-height: 1.8;
+    opacity: 0.6;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .about-links {
+    grid-column: 3;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  .about-links a {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #111;
+    text-decoration: none;
+    opacity: 0.4;
+    transition: opacity 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+
+  .about-links a:hover { opacity: 1; color: #FF5C00; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.35;
+    margin-bottom: 16px;
+  }
+
+  /* ── PORTFOLIO ── */
+  .portfolio-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    column-gap: 24px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-top: 1px solid #e5e5e5;
+    text-decoration: none;
+    color: #111;
+  }
+
+  .portfolio-item:last-child { border-bottom: 1px solid #e5e5e5; }
+  .portfolio-item:hover .portfolio-title { color: #FF5C00; }
+
+  .portfolio-title {
+    font-size: 13px;
+    font-weight: 700;
+    grid-column: 1; grid-row: 1;
+    transition: color 0.15s;
+  }
+
+  .portfolio-desc {
+    font-size: 11px;
+    opacity: 0.45;
+    grid-column: 1; grid-row: 2;
+    margin-top: 4px;
+    line-height: 1.6;
+  }
+
+  .portfolio-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #FF5C00;
+    opacity: 0.75;
+    grid-column: 2; grid-row: 1;
+    white-space: nowrap;
+    align-self: start;
+    padding-top: 1px;
+  }
+
+  /* ── CARROUSEL ── */
+  .carousel-section { margin-top: 72px; }
+
+  .carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%, #000 60px,
+      #000 calc(100% - 60px), transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%, #000 60px,
+      #000 calc(100% - 60px), transparent 100%
+    );
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 12px;
+    width: max-content;
+    animation: scroll-left 28s linear infinite;
+  }
+
+  .carousel-wrapper:hover .carousel-track { animation-play-state: paused; }
+
+  @keyframes scroll-left {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .carousel-card {
+    flex-shrink: 0;
+    width: 110px;
+    border: 1px solid #e5e5e5;
+    text-decoration: none;
+    color: #111;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s;
+  }
+
+  .carousel-card:hover { border-color: #FF5C00; }
+
+  .carousel-card-img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carousel-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(20%);
+    transition: filter 0.2s;
+  }
+
+  .carousel-card:hover .carousel-card-img img { filter: grayscale(0%); }
+
+  .carousel-card-img .placeholder-text {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.2;
+    text-align: center;
+    padding: 8px;
+  }
+
+  .carousel-card-label {
+    padding: 8px 8px 9px;
+    border-top: 1px solid #e5e5e5;
+  }
+
+  .carousel-card-name {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .carousel-card-date {
+    font-size: 8px;
+    opacity: 0.35;
+    margin-top: 2px;
+    display: block;
+  }
+
+  /* ── NEWSLETTER DARK ── */
+  .newsletter-dark {
+    margin-top: 72px;
+    background: #111;
+    color: #fff;
+    padding: 40px 36px;
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+
+  .newsletter-dark .section-label {
+    color: #FF5C00;
+    opacity: 1;
+  }
+
+  .newsletter-intro {
+    font-size: 11px;
+    line-height: 1.9;
+    color: #aaa;
+    margin: 12px 0 36px 0;
+    font-style: italic;
+    max-width: 440px;
+  }
+
+  .edition-dark {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 13px 0;
+    border-top: 1px solid #2a2a2a;
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.15s;
+  }
+
+  .edition-dark:last-of-type {
+    border-bottom: 1px solid #2a2a2a;
+    margin-bottom: 36px;
+  }
+
+  .edition-dark:hover .edition-dark-title { color: #FF5C00; }
+
+  .edition-dark-title { font-size: 13px; }
+
+  .edition-dark-meta {
+    font-size: 10px;
+    color: #555;
+    white-space: nowrap;
+    margin-left: 24px;
+  }
+
+  .subscribe-dark-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .subscribe-dark-hint {
+    font-size: 10px;
+    color: #555;
+    margin-bottom: 16px;
+  }
+
+  .subscribe-dark-row { display: flex; gap: 8px; }
+
+  .subscribe-dark-input {
+    flex: 1;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    padding: 10px 12px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .subscribe-dark-input::placeholder { color: #444; }
+  .subscribe-dark-input:focus { border-color: #FF5C00; }
+
+  .subscribe-dark-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    background: #FF5C00;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+
+  .subscribe-dark-btn:hover { background: #e04e00; }
+
+  /* ── FOOTER ── */
+  footer { margin-top: 60px; padding-bottom: 80px; }
+
+  footer a {
+    font-size: 11px;
+    color: #111;
+    opacity: 0.35;
+    text-decoration: none;
+  }
+
+  footer a:hover { opacity: 1; color: #FF5C00; }
+</style>
+</head>
+<body>
+
+<!-- 1. HEADER -->
+<header>
+  <h1>Arthur Devriendt</h1>
+</header>
+
+<!-- 2. ABOUT STRIP -->
+<div class="about-strip">
+  <div class="about-photo">
+    <img src="https://i.pravatar.cc/136" alt="Arthur Devriendt">
+  </div>
+  <p>
+    Journaliste et traducteur basé à Berlin.<br>
+    Je couvre les questions sociales, le travail et les politiques publiques<br>
+    en Allemagne pour la presse française et internationale.
+  </p>
+  <nav class="about-links">
+    <a href="mailto:arthur@exemple.com">Email →</a>
+    <a href="https://twitter.com/" target="_blank" rel="noopener">Twitter →</a>
+    <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn →</a>
+    <div class="about-links">
+  <a href="#newsletter">Newsletter →</a>
+</div>
+
+  </nav>
+</div>
+
+<main>
+
+  <!-- 3. PORTFOLIO -->
+  <section class="portfolio" style="margin-top: 0;">
+    <p class="section-label">Travaux & publications</p>
+
+    <a class="portfolio-item" href="#" target="_blank" rel="noopener">
+      <span class="portfolio-title">Enquête : le marché du logement à Berlin</span>
+      <span class="portfolio-tag">Presse</span>
+      <span class="portfolio-desc">Le Monde Diplomatique — Décembre 2024</span>
+    </a>
+    <a class="portfolio-item" href="#" target="_blank" rel="noopener">
+      <span class="portfolio-title">Podcast — Soziale Frage, saison 2</span>
+      <span class="portfolio-tag">Audio</span>
+      <span class="portfolio-desc">8 épisodes sur les mutations du travail en Allemagne</span>
+    </a>
+    <a class="portfolio-item" href="#" target="_blank" rel="noopener">
+      <span class="portfolio-title">La grève fantôme — récit long format</span>
+      <span class="portfolio-tag">Récit</span>
+      <span class="portfolio-desc">XXI / Revue — Automne 2024</span>
+    </a>
+    <a class="portfolio-item" href="#" target="_blank" rel="noopener">
+      <span class="portfolio-title">Conférence : Médias et classe ouvrière</span>
+      <span class="portfolio-tag">Intervention</span>
+      <span class="portfolio-desc">Sciences Po Paris — Octobre 2024</span>
+    </a>
+    <a class="portfolio-item" href="#" target="_blank" rel="noopener">
+      <span class="portfolio-title">Traduction : Hornby, Travailler sans filet</span>
+      <span class="portfolio-tag">Traduction</span>
+      <span class="portfolio-desc">Éditions La Découverte — 2023</span>
+    </a>
+  </section>
+
+  <!-- 4. CARROUSEL -->
+  <section class="carousel-section">
+    <p class="section-label">Parus dans</p>
+    <div class="carousel-wrapper">
+      <div class="carousel-track">
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/monde-diplo.jpg" alt="Le Monde Diplomatique"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Le Monde Diplo</span>
+            <span class="carousel-card-date">Déc. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/xxi.jpg" alt="XXI"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">XXI</span>
+            <span class="carousel-card-date">Automne 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/telerama.jpg" alt="Télérama"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Télérama</span>
+            <span class="carousel-card-date">Sep. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/mediapart.jpg" alt="Mediapart"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Mediapart</span>
+            <span class="carousel-card-date">Juil. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/leobs.jpg" alt="Le Nouvel Obs"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Le Nouvel Obs</span>
+            <span class="carousel-card-date">Mai 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/slate.jpg" alt="Slate.fr"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Slate.fr</span>
+            <span class="carousel-card-date">Mar. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/alternatives.jpg" alt="Alternatives Éco."></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Alternatives Éco.</span>
+            <span class="carousel-card-date">Fév. 2024</span>
+          </div>
+        </a>
+        <!-- Doublons pour boucle infinie -->
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/monde-diplo.jpg" alt="Le Monde Diplomatique"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Le Monde Diplo</span>
+            <span class="carousel-card-date">Déc. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/xxi.jpg" alt="XXI"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">XXI</span>
+            <span class="carousel-card-date">Automne 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/telerama.jpg" alt="Télérama"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Télérama</span>
+            <span class="carousel-card-date">Sep. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/mediapart.jpg" alt="Mediapart"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Mediapart</span>
+            <span class="carousel-card-date">Juil. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/leobs.jpg" alt="Le Nouvel Obs"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Le Nouvel Obs</span>
+            <span class="carousel-card-date">Mai 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/slate.jpg" alt="Slate.fr"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Slate.fr</span>
+            <span class="carousel-card-date">Mar. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/alternatives.jpg" alt="Alternatives Éco."></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Alternatives Éco.</span>
+            <span class="carousel-card-date">Fév. 2024</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 + 6. NEWSLETTER DARK -->
+  <section class="newsletter-dark" id="newsletter">
+
+    <p class="section-label">Notizbuch — la newsletter</p>
+
+    <p class="newsletter-intro">
+      Toutes les deux semaines, un regard depuis Berlin sur la politique sociale,
+      le travail et les mutations de la société allemande. Pas de bruit,
+      pas d'algorithme — juste une lettre.
+    </p>
+
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 12 — Le silence des algorithmes</span>
+      <span class="edition-dark-meta">14 jan. 2025</span>
+    </a>
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 11 — Ce que l'on efface</span>
+      <span class="edition-dark-meta">7 jan. 2025</span>
+    </a>
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 10 — Cartographies du vide</span>
+      <span class="edition-dark-meta">31 déc. 2024</span>
+    </a>
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 09 — Infrastructures invisibles</span>
+      <span class="edition-dark-meta">24 déc. 2024</span>
+    </a>
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 08 — Pratiques du fragment</span>
+      <span class="edition-dark-meta">17 déc. 2024</span>
+    </a>
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 07 — Mémoire volatile</span>
+      <span class="edition-dark-meta">10 déc. 2024</span>
+    </a>
+
+    <span class="subscribe-dark-label" style="margin-top: 36px; display: block;">S'abonner</span>
+    <p class="subscribe-dark-hint">Gratuit. Désinscription en un clic.</p>
+    <form class="subscribe-dark-row" action="#" method="post">
+      <input class="subscribe-dark-input" type="email" name="email"
+             placeholder="votre@email.com" required autocomplete="email"/>
+      <button class="subscribe-dark-btn" type="submit">S'abonner →</button>
+    </form>
+
+  </section>
+
+</main>
+
+<!-- 7. FOOTER -->
+<footer>
+  <a href="">À propos & contact</a>
+</footer>
+
+</body>
+</html>
