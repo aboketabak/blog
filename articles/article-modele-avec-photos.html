@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="fr"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1">&lt;title&gt;No. 12 — Le silence des algorithmes — Dispatch&lt;/title&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&amp;display=swap');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>* { margin: 0; padding: 0; box-sizing: border-box; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: #fff;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: #111;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'IBM Plex Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>max-width: 600px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin: 80px auto;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 0 24px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* NAV */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>nav {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 80px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>nav a {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 11px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: #111;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>opacity: 0.35;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-decoration: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>letter-spacing: 1px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>nav a:hover {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>opacity: 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: #FF5C00;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* HEADER */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.article-header {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 48px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding-bottom: 32px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-bottom: 2px solid #111;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.article-meta {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>opacity: 0.35;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>letter-spacing: 2px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.article-title {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 28px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>line-height: 1.15;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: inline;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background-color: #FF5C00;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: #fff;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 2px 6px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>box-decoration-break: clone;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>-webkit-box-decoration-break: clone;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.article-title-wrap {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 24px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>line-height: 1.4;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.article-intro {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>line-height: 1.7;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>opacity: 0.55;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-left: 2px solid #FF5C00;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding-left: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-top: 24px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* BODY */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.article-body p {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>line-height: 1.8;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 28px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: #222;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.article-body h2 {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>letter-spacing: 2px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin: 48px 0 16px 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding-bottom: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-bottom: 1px solid #111;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.article-body blockquote {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-left: 3px solid #FF5C00;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 12px 0 12px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin: 32px 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>line-height: 1.7;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>opacity: 0.75;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* PHOTOS */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.photo-full {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>height: auto;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin: 40px 0 0 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.photo-caption {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>opacity: 0.35;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-top: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 40px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>letter-spacing: 1px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.photo-duo {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>grid-template-columns: 1fr 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin: 40px 0 0 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.photo-duo img {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>height: auto;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* SEPARATEUR */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.sep {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-top: 1px solid #e0e0e0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin: 40px 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* FOOTER */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>footer {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-top: 80px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding-top: 24px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-top: 2px solid #111;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>justify-content: space-between;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>letter-spacing: 1px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>footer a {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: #111;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>opacity: 0.35;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-decoration: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>footer a:hover {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>opacity: 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: #FF5C00;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;nav&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;a href="index.html"&gt;← DISPATCH&lt;/a&gt;</p>
+<p class="p1">&lt;/nav&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;article&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;header class="article-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="article-meta"&gt;No. 12 — 14 janvier 2025&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="article-title-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="article-title"&gt;Le silence des algorithmes&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="article-intro"&gt;Ce que les systèmes de recommandation ne disent pas, et pourquoi ce silence est une forme de pouvoir.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="article-body"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;C'est une forme de censure douce, presque imperceptible, qui n'a même pas besoin de se nommer. Elle opère dans l'indistinct, dans l'espace entre ce qui existe et ce qui circule. Un texte peut être publié, accessible, techniquement disponible — et pourtant absent de facto de l'espace public numérique.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;Les algorithmes de recommandation ne suppriment rien. Ils hiérarchisent. Et dans cette hiérarchie silencieuse, certaines voix descendent si bas qu'elles disparaissent sans laisser de trace.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Ce que ça change&lt;/h2&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;La différence entre être censuré et être ignoré est devenue technique. Un contenu dérangeant n'est plus retiré — il est simplement moins montré. Pas de décision visible, pas de recours possible, pas même de notification.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;blockquote&gt;« La suppression n'est plus nécessaire quand l'invisibilité suffit. »&lt;/blockquote&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;Ce glissement a des conséquences profondes sur la manière dont nous comprenons la liberté d'expression. Celle-ci ne peut plus se mesurer à la seule présence d'un contenu en ligne — elle doit intégrer sa capacité à circuler, à atteindre, à rencontrer un lecteur.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;img class="photo-full"</p>
+<p class="p1"><span class="Apple-converted-space">         </span>src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1104&amp;h=736&amp;fit=crop"</p>
+<p class="p1"><span class="Apple-converted-space">         </span>alt="Serveurs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="photo-caption"&gt;Centre de données, Oregon — 2024&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;La neutralité comme fiction&lt;/h2&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;Les plateformes maintiennent l'idée qu'elles sont neutres — de simples tuyaux, des infrastructures sans intention. Mais un tuyau qui décide quoi faire passer en premier n'est plus un tuyau. C'est un éditeur qui refuse de se reconnaître comme tel.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="photo-duo"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=528&amp;h=528&amp;fit=crop" alt="Circuit"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=528&amp;h=528&amp;fit=crop" alt="Code"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="photo-caption"&gt;À gauche : architecture matérielle. À droite : ce que personne ne lit vraiment.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Ce qu'on peut faire&lt;/h2&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;Peu de choses, à vrai dire — et c'est peut-être le point. La résistance individuelle à l'invisibilité algorithmique est structurellement limitée. Elle demande des ressources, une audience préexistante, une diversification des canaux que la plupart des producteurs de contenus indépendants ne peuvent pas se permettre.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;Ce qui reste : nommer le mécanisme. Refuser la neutralité comme postulat. Et continuer à écrire comme si quelqu'un lisait.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/article&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;footer&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;a href="index.html"&gt;← Toutes les éditions&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;a href="about.html"&gt;À propos &amp; contact&lt;/a&gt;</p>
+<p class="p1">&lt;/footer&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
