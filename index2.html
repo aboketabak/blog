@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DISPATCH</title>
+<title>Notizbuch</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap');
 
@@ -16,29 +16,129 @@
     font-size: 13px;
     max-width: 600px;
     margin: 80px auto;
+    /* ✅ padding augmenté légèrement, suffisant sur mobile */
     padding: 0 24px;
   }
 
+  /* ── HEADER ── */
   header {
-    margin-bottom: 60px;
+    margin-bottom: 24px;
   }
 
   h1 {
-    font-size: 40px;
+    /* ✅ clamp() : s'adapte entre 26px (mobile) et 40px (desktop) */
+    font-size: clamp(26px, 8vw, 40px);
     font-weight: 700;
     letter-spacing: -1px;
     color: #FF5C00;
-    margin-bottom: 10px;
+    line-height: 1;
   }
 
-  header p {
+  /* ── ABOUT STRIP ── */
+  .about-strip {
+    margin-bottom: 60px;
+    padding: 20px;
+    border: 1px solid #e5e5e5;
+    display: grid;
+    /* ✅ Desktop : photo | texte | liens */
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto;
+    gap: 16px 20px;
+    align-items: start;
+  }
+
+  .about-photo {
+    grid-column: 1;
+    grid-row: 1;
+    width: 68px;
+    height: 68px;
+    overflow: hidden;
+    border: 1px solid #e5e5e5;
+    border-radius: 2px;
+    /* ✅ évite que la photo rétrécisse */
+    flex-shrink: 0;
+  }
+
+  .about-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    filter: grayscale(25%);
+    transition: filter 0.2s;
+  }
+
+  .about-photo img:hover { filter: grayscale(0%); }
+
+  .about-strip p {
     font-size: 11px;
-    opacity: 0.4;
+    line-height: 1.8;
+    opacity: 0.6;
+    grid-column: 2;
+    grid-row: 1;
   }
 
-  .edition {
+  .about-links {
+    grid-column: 3;
+    grid-row: 1;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  .about-links a {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #111;
+    text-decoration: none;
+    opacity: 0.4;
+    transition: opacity 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+
+  .about-links a:hover { opacity: 1; color: #FF5C00; }
+
+  /* ✅ MOBILE : about-strip passe en 2 colonnes puis colonne unique */
+  @media (max-width: 480px) {
+    .about-strip {
+      /* photo + liens sur ligne 1, texte sur ligne 2 */
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      gap: 12px 16px;
+    }
+
+    .about-strip p {
+      grid-column: 1 / -1; /* ✅ pleine largeur */
+      grid-row: 2;
+    }
+
+    .about-links {
+      grid-column: 2;
+      grid-row: 1;
+      align-items: flex-end;
+    }
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.35;
+    margin-bottom: 16px;
+  }
+
+  /* ── PORTFOLIO ── */
+  .portfolio-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    column-gap: 16px;
     align-items: baseline;
     padding: 14px 0;
     border-top: 1px solid #e5e5e5;
@@ -46,73 +146,246 @@
     color: #111;
   }
 
-  .edition:last-child {
-    border-bottom: 1px solid #e5e5e5;
-  }
+  .portfolio-item:last-child { border-bottom: 1px solid #e5e5e5; }
+  .portfolio-item:hover .portfolio-title { color: #FF5C00; }
 
-  .edition:hover .edition-title {
-    color: #FF5C00;
-  }
-
-  .edition-title {
+  .portfolio-title {
     font-size: 13px;
+    font-weight: 700;
+    grid-column: 1; grid-row: 1;
+    transition: color 0.15s;
+    /* ✅ autorise le retour à la ligne sur mobile */
+    word-break: break-word;
   }
 
-  .edition-meta {
-    font-size: 10px;
-    opacity: 0.35;
+  .portfolio-desc {
+    font-size: 11px;
+    opacity: 0.45;
+    grid-column: 1; grid-row: 2;
+    margin-top: 4px;
+    line-height: 1.6;
+  }
+
+  .portfolio-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #FF5C00;
+    opacity: 0.75;
+    grid-column: 2; grid-row: 1;
     white-space: nowrap;
-    margin-left: 24px;
+    align-self: start;
+    padding-top: 1px;
   }
 
-  /* --- Formulaire d'abonnement --- */
-  .subscribe {
-    margin-top: 60px;
-    padding: 28px;
+  /* ── CARROUSEL ── */
+  .carousel-section { margin-top: 72px; }
+
+  .carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%, #000 40px,
+      #000 calc(100% - 40px), transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%, #000 40px,
+      #000 calc(100% - 40px), transparent 100%
+    );
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 12px;
+    width: max-content;
+    animation: scroll-left 28s linear infinite;
+  }
+
+  /* ✅ Sur mobile : pause au touch via focus-within */
+  .carousel-wrapper:hover .carousel-track,
+  .carousel-wrapper:focus-within .carousel-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes scroll-left {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .carousel-card {
+    flex-shrink: 0;
+    /* ✅ légèrement plus petit sur mobile via clamp */
+    width: clamp(90px, 22vw, 110px);
     border: 1px solid #e5e5e5;
+    text-decoration: none;
+    color: #111;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s;
   }
 
-  .subscribe-label {
+  .carousel-card:hover { border-color: #FF5C00; }
+
+  .carousel-card-img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carousel-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(20%);
+    transition: filter 0.2s;
+  }
+
+  .carousel-card:hover .carousel-card-img img { filter: grayscale(0%); }
+
+  .carousel-card-label {
+    padding: 8px 8px 9px;
+    border-top: 1px solid #e5e5e5;
+  }
+
+  .carousel-card-name {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .carousel-card-date {
+    font-size: 8px;
+    opacity: 0.35;
+    margin-top: 2px;
+    display: block;
+  }
+
+  /* ── NEWSLETTER DARK ── */
+  .newsletter-dark {
+    margin-top: 72px;
+    background: #111;
+    color: #fff;
+    padding: 40px 36px;
+    /*
+      ✅ CORRECTION PRINCIPALE :
+      Au lieu de marges négatives fixes (-24px),
+      on utilise une variable CSS calée sur le padding du body.
+      Sur mobile le padding du body est 24px, donc les marges négatives
+      doivent correspondre exactement.
+    */
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+
+  /* ✅ Sur très petit écran, on réduit le padding interne */
+  @media (max-width: 400px) {
+    .newsletter-dark {
+      padding: 32px 20px;
+    }
+  }
+
+  .newsletter-dark .section-label {
+    color: #FF5C00;
+    opacity: 1;
+  }
+
+  .newsletter-intro {
+    font-size: 11px;
+    line-height: 1.9;
+    color: #aaa;
+    margin: 12px 0 36px 0;
+    font-style: italic;
+    max-width: 440px;
+  }
+
+  .edition-dark {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    /* ✅ gap au lieu de margin-left fixe sur .edition-dark-meta */
+    gap: 16px;
+    padding: 13px 0;
+    border-top: 1px solid #2a2a2a;
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.15s;
+    /* ✅ autorise le wrap sur mobile */
+    flex-wrap: wrap;
+  }
+
+  .edition-dark:last-of-type {
+    border-bottom: 1px solid #2a2a2a;
+    margin-bottom: 36px;
+  }
+
+  .edition-dark:hover .edition-dark-title { color: #FF5C00; }
+
+  .edition-dark-title {
+    font-size: 13px;
+    /* ✅ prend l'espace disponible avant la date */
+    flex: 1 1 200px;
+  }
+
+  .edition-dark-meta {
+    font-size: 10px;
+    color: #555;
+    white-space: nowrap;
+    /* ✅ suppression du margin-left fixe, remplacé par gap sur parent */
+  }
+
+  .subscribe-dark-label {
     display: block;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    color: #fff;
     margin-bottom: 6px;
   }
 
-  .subscribe-hint {
+  .subscribe-dark-hint {
     font-size: 10px;
-    opacity: 0.4;
+    color: #555;
     margin-bottom: 16px;
   }
 
-  .subscribe-row {
+  .subscribe-dark-row {
     display: flex;
     gap: 8px;
+    /* ✅ wrap : le bouton passe en dessous si plus assez de place */
+    flex-wrap: wrap;
   }
 
-  .subscribe-input {
-    flex: 1;
+  .subscribe-dark-input {
+    /* ✅ min-width pour éviter un input trop écrasé */
+    flex: 1 1 180px;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     padding: 10px 12px;
-    border: 1px solid #e5e5e5;
-    background: #fff;
-    color: #111;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: #fff;
     outline: none;
     transition: border-color 0.15s;
   }
 
-  .subscribe-input::placeholder {
-    opacity: 0.3;
-  }
+  .subscribe-dark-input::placeholder { color: #444; }
+  .subscribe-dark-input:focus { border-color: #FF5C00; }
 
-  .subscribe-input:focus {
-    border-color: #FF5C00;
-  }
-
-  .subscribe-btn {
+  .subscribe-dark-btn {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     font-weight: 700;
@@ -125,16 +398,14 @@
     cursor: pointer;
     white-space: nowrap;
     transition: background 0.15s;
+    /* ✅ pleine largeur si le bouton est seul sur sa ligne */
+    flex-shrink: 0;
   }
 
-  .subscribe-btn:hover {
-    background: #e04e00;
-  }
-  /* --- Fin formulaire --- */
+  .subscribe-dark-btn:hover { background: #e04e00; }
 
-  footer {
-    margin-top: 60px;
-  }
+  /* ── FOOTER ── */
+  footer { margin-top: 60px; padding-bottom: 80px; }
 
   footer a {
     font-size: 11px;
@@ -143,65 +414,239 @@
     text-decoration: none;
   }
 
-  footer a:hover {
-    opacity: 1;
-    color: #FF5C00;
+  footer a:hover { opacity: 1; color: #FF5C00; }
+
+  /* ✅ RÉDUCTION des marges verticales sur mobile */
+  @media (max-width: 480px) {
+    body {
+      margin: 40px auto;
+    }
+
+    .about-strip {
+      margin-bottom: 40px;
+    }
+
+    .carousel-section {
+      margin-top: 48px;
+    }
+
+    .newsletter-dark {
+      margin-top: 48px;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding-bottom: 48px;
+    }
   }
 </style>
 </head>
 <body>
 
+<!-- 1. HEADER -->
 <header>
-  <h1>Notizbuch</h1>
-  <p>Carnet sur l'actualité sociale allemande — par Arthur Devriendt</p>
+  <h1>Arthur Devriendt</h1>
 </header>
 
-<main>
-  <a class="edition" href="#">
-    <span class="edition-title">No. 12 — Le silence des algorithmes</span>
-    <span class="edition-meta">14 jan. 2025</span>
-  </a>
-  <a class="edition" href="#">
-    <span class="edition-title">No. 11 — Ce que l'on efface</span>
-    <span class="edition-meta">7 jan. 2025</span>
-  </a>
-  <a class="edition" href="#">
-    <span class="edition-title">No. 10 — Cartographies du vide</span>
-    <span class="edition-meta">31 déc. 2024</span>
-  </a>
-  <a class="edition" href="#">
-    <span class="edition-title">No. 09 — Infrastructures invisibles</span>
-    <span class="edition-meta">24 déc. 2024</span>
-  </a>
-  <a class="edition" href="#">
-    <span class="edition-title">No. 08 — Pratiques du fragment</span>
-    <span class="edition-meta">17 déc. 2024</span>
-  </a>
-  <a class="edition" href="#">
-    <span class="edition-title">No. 07 — Mémoire volatile</span>
-    <span class="edition-meta">10 déc. 2024</span>
-  </a>
-</main>
-
-<!-- Formulaire d'abonnement -->
-<div class="subscribe">
-  <span class="subscribe-label">S'abonner</span>
-  <p class="subscribe-hint">Chaque semaine dans votre boîte mail. Gratuit.</p>
-  <form class="subscribe-row" action="#" method="post">
-    <input
-      class="subscribe-input"
-      type="email"
-      name="email"
-      placeholder="votre@email.com"
-      required
-      autocomplete="email"
-    />
-    <button class="subscribe-btn" type="submit">S'abonner →</button>
-  </form>
+<!-- 2. ABOUT STRIP -->
+<div class="about-strip">
+  <div class="about-photo">
+    <img src="https://raw.githubusercontent.com/aboketabak/blog/de73e2e03a6e117ee6de4b2fe7a09f5b92b8931f/portrait.jpeg" alt="Arthur Devriendt">
+  </div>
+  <p>
+    Journaliste français basé à Francfort.<br>
+    Je m'intéresse à la recherche, aux sciences humaines et aux questions sociales, en France comme en Allemagne.
+  </p>
+  <nav class="about-links">
+    <a href="mailto:arthur.devriendt@posteo.net">Email →</a>
+    <a href="https://twitter.com/" target="_blank" rel="noopener">Bluesky →</a>
+    <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn →</a>
+    <a href="#newsletter">Newsletter →</a>
+  </nav>
 </div>
 
+<main>
+
+  <!-- 3. PORTFOLIO -->
+  <section class="portfolio" style="margin-top: 0;">
+    <p class="section-label">Articles récents</p>
+
+    <a class="portfolio-item" href="https://education.newstank.fr/article/view/441662/25-ans-hal-plateforme-maturite-defis-ia-integrite-scientifique-fargier.html" target="_blank" rel="noopener">
+      <span class="portfolio-title">La plateforme HAL a 25 ans : les défis de l'IA et de l'intégrité scientifique</span>
+      <span class="portfolio-tag">Presse</span>
+      <span class="portfolio-desc">News Tank Education & Recherche — Mai 2026</span>
+    </a>
+    <a class="portfolio-item" href="https://education.newstank.fr/article/view/427323/recherche-participative-elargissement-rationalites-scientifiques-maxime.html" target="_blank" rel="noopener">
+      <span class="portfolio-title">La recherche participative, « un élargissement des rationalités scientifiques »</span>
+      <span class="portfolio-tag">Presse</span>
+      <span class="portfolio-desc">News Tank Education & Recherche — Janvier 2026</span>
+    </a>
+    <a class="portfolio-item" href="https://education.newstank.fr/article/view/421284/valorisation-recherche-besoin-debat-transformations-implique-v-brun.html" target="_blank" rel="noopener">
+      <span class="portfolio-title">Valorisation de la recherche : besoin d'un « débat sur les transformations qu'elle implique »</span>
+      <span class="portfolio-tag">Presse</span>
+      <span class="portfolio-desc">News Tank Education & Recherche — Novembre 2025</span>
+    </a>
+  </section>
+
+  <!-- 4. CARROUSEL -->
+  <section class="carousel-section">
+    <p class="section-label">Parus dans</p>
+    <div class="carousel-wrapper">
+      <div class="carousel-track">
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2F3.bp.blogspot.com%2F-U1e3L5YfNio%2FWK6gM_i7lgI%2FAAAAAAAAF94%2FxKBau6cjXHUmh1TgiC0AB3q2D1O_3p_WACLcB%2Fs1600%2Fclod_00715.png&sp=1779719485T1d55f80408909ab31a1f0be5eb809abfa58e1cb1c154084799ebc8905d72e396" alt="La gazette des communes"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">La gazette des communes</span>
+            <span class="carousel-card-date">Déc. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Flarevuedesmedias.ina.fr%2Fsites%2Fdefault%2Ffiles%2F2019-03%2Fvisuel%2520article%2520Ina%2520Global%2520devient%2520La%2520Revue%2520des%2520m%25C3%25A9dias.png&sp=1779719745T05cdf7a6770abf4b7a82cf89bb55d7191b0cf2a1663df781fbf1293a37dd3161" alt="La revue des médias"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">La revue des médias</span>
+            <span class="carousel-card-date">Automne 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/telerama.jpg" alt="Télérama"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Télérama</span>
+            <span class="carousel-card-date">Sep. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/mediapart.jpg" alt="Mediapart"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Mediapart</span>
+            <span class="carousel-card-date">Juil. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/leobs.jpg" alt="Le Nouvel Obs"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Le Nouvel Obs</span>
+            <span class="carousel-card-date">Mai 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/slate.jpg" alt="Slate.fr"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Slate.fr</span>
+            <span class="carousel-card-date">Mar. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/alternatives.jpg" alt="Alternatives Éco."></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Alternatives Éco.</span>
+            <span class="carousel-card-date">Fév. 2024</span>
+          </div>
+        </a>
+        <!-- Doublons pour boucle infinie -->
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2F3.bp.blogspot.com%2F-U1e3L5YfNio%2FWK6gM_i7lgI%2FAAAAAAAAF94%2FxKBau6cjXHUmh1TgiC0AB3q2D1O_3p_WACLcB%2Fs1600%2Fclod_00715.png&sp=1779719485T1d55f80408909ab31a1f0be5eb809abfa58e1cb1c154084799ebc8905d72e396" alt="La gazette des communes"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">La gazette des communes</span>
+            <span class="carousel-card-date">Déc. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Flarevuedesmedias.ina.fr%2Fsites%2Fdefault%2Ffiles%2F2019-03%2Fvisuel%2520article%2520Ina%2520Global%2520devient%2520La%2520Revue%2520des%2520m%25C3%25A9dias.png&sp=1779719745T05cdf7a6770abf4b7a82cf89bb55d7191b0cf2a1663df781fbf1293a37dd3161" alt="La revue des médias"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">La revue des médias</span>
+            <span class="carousel-card-date">Automne 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/telerama.jpg" alt="Télérama"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Télérama</span>
+            <span class="carousel-card-date">Sep. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/mediapart.jpg" alt="Mediapart"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Mediapart</span>
+            <span class="carousel-card-date">Juil. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/leobs.jpg" alt="Le Nouvel Obs"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Le Nouvel Obs</span>
+            <span class="carousel-card-date">Mai 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/slate.jpg" alt="Slate.fr"></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Slate.fr</span>
+            <span class="carousel-card-date">Mar. 2024</span>
+          </div>
+        </a>
+        <a class="carousel-card" href="#" target="_blank" rel="noopener">
+          <div class="carousel-card-img"><img src="covers/alternatives.jpg" alt="Alternatives Éco."></div>
+          <div class="carousel-card-label">
+            <span class="carousel-card-name">Alternatives Éco.</span>
+            <span class="carousel-card-date">Fév. 2024</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 + 6. NEWSLETTER DARK -->
+  <section class="newsletter-dark" id="newsletter">
+
+    <p class="section-label">Notizbuch — la newsletter</p>
+
+    <p class="newsletter-intro">
+      Toutes les deux semaines, un regard depuis Berlin sur la politique sociale,
+      le travail et les mutations de la société allemande. Pas de bruit,
+      pas d'algorithme — juste une lettre.
+    </p>
+
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 12 — Le silence des algorithmes</span>
+      <span class="edition-dark-meta">14 jan. 2025</span>
+    </a>
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 11 — Ce que l'on efface</span>
+      <span class="edition-dark-meta">7 jan. 2025</span>
+    </a>
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 10 — Cartographies du vide</span>
+      <span class="edition-dark-meta">31 déc. 2024</span>
+    </a>
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 09 — Infrastructures invisibles</span>
+      <span class="edition-dark-meta">24 déc. 2024</span>
+    </a>
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 08 — Pratiques du fragment</span>
+      <span class="edition-dark-meta">17 déc. 2024</span>
+    </a>
+    <a class="edition-dark" href="#">
+      <span class="edition-dark-title">No. 07 — Mémoire volatile</span>
+      <span class="edition-dark-meta">10 déc. 2024</span>
+    </a>
+
+    <span class="subscribe-dark-label" style="margin-top: 36px; display: block;">S'abonner</span>
+    <p class="subscribe-dark-hint">Gratuit. Désinscription en un clic.</p>
+    <form class="subscribe-dark-row" action="#" method="post">
+      <input class="subscribe-dark-input" type="email" name="email"
+             placeholder="votre@email.com" required autocomplete="email"/>
+      <button class="subscribe-dark-btn" type="submit">S'abonner →</button>
+    </form>
+
+  </section>
+
+</main>
+
+<!-- 7. FOOTER -->
 <footer>
-  <a href="about.html">À propos & contact</a>
+  <a href="">À propos & contact</a>
 </footer>
 
 </body>
