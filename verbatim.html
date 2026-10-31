@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Verbatim</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #f3f4f1;
+  --fg: #1c2025;
+  --muted: #5f666e;
+  --line: #cfd3d6;
+  --panel: #eaecea;
+  --pen: #a3262b;
+  --pen-bg: #f3dede;
+  --ok: #24527a;
+  --ok-bg: #dfe8f0;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #15181b;
+    --fg: #dfe2e5;
+    --muted: #98a0a8;
+    --line: #333a40;
+    --panel: #1d2226;
+    --pen: #e58b8f;
+    --pen-bg: #3a2325;
+    --ok: #8fb7da;
+    --ok-bg: #202e3a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #15181b;
+  --fg: #dfe2e5;
+  --muted: #98a0a8;
+  --line: #333a40;
+  --panel: #1d2226;
+  --pen: #e58b8f;
+  --pen-bg: #3a2325;
+  --ok: #8fb7da;
+  --ok-bg: #202e3a;
+}
+html { height: 100%; scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
+main { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+h1 { font-size: 1.9rem; font-weight: 600; letter-spacing: 0.01em; margin: 0 0 0.25rem; }
+h2 { font-size: 1.25rem; font-weight: 600; margin: 2rem 0 0.5rem; }
+p { margin: 0.75rem 0; }
+.sub { color: var(--muted); font-style: italic; margin-top: 0; }
+.gauges { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 0.6rem 0; margin: 1.25rem 0 0.5rem; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.82rem; line-height: 1.7; }
+.g { display: flex; gap: 0.75rem; }
+.gl { width: 7.5rem; color: var(--muted); }
+.gb { letter-spacing: 0.05em; }
+.gv { margin-left: auto; }
+.card { border: 1px solid var(--line); padding: 0.9rem 1rem; margin: 0.9rem 0; }
+.card b { font-weight: 600; }
+.small { font-size: 0.9rem; color: var(--muted); }
+.q { font-weight: 600; margin: 1.1rem 0 0.15rem; }
+.a { margin: 0 0 0.5rem; padding-left: 1rem; border-left: 2px solid var(--line); }
+.orig, .alt { padding: 0.5rem 0.75rem; margin: 0.4rem 0; }
+.orig { background: var(--panel); }
+.alt { background: var(--pen-bg); border-left: 3px solid var(--pen); }
+.lbl { display: block; font-size: 0.82rem; color: var(--muted); margin-bottom: 0.15rem; }
+.alt .lbl { color: var(--pen); }
+.margin { font-style: italic; color: var(--muted); font-size: 0.92rem; margin: 0.25rem 0 0.5rem; }
+.row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.75rem 0; }
+button {
+  font: inherit; font-size: 0.95rem; color: var(--fg); background: transparent;
+  border: 1px solid var(--fg); padding: 0.45rem 0.9rem; cursor: pointer; text-align: left;
+}
+button:hover:not(:disabled) { background: var(--fg); color: var(--bg); }
+button:focus-visible { outline: 3px solid var(--ok); outline-offset: 2px; }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+button.sel { background: var(--ok-bg); border-color: var(--ok); color: var(--fg); font-weight: 600; }
+button.sel-pen { background: var(--pen-bg); border-color: var(--pen); color: var(--fg); font-weight: 600; }
+.headline { font-size: 1.35rem; font-weight: 600; line-height: 1.3; margin: 0.5rem 0 1rem; }
+.delta { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.85rem; margin: 0.75rem 0; }
+.recap li { margin: 0.35rem 0; }
+.recap { padding-left: 1.1rem; }
+.reaction { border-left: 3px solid var(--ok); padding-left: 0.9rem; margin: 1rem 0; }
+.warn { color: var(--pen); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Verbatim</h1>
+  <p class="sub">Un jeu de relecture dans la presse politique de Valmeria.</p>
+  <div id="gauges"></div>
+  <div id="app"></div>
+</main>
+
+<script>
+"use strict";
+
+/* ---------- Données ---------- */
+
+var EFF = {
+  correction: { acc: { not: 1, ind: 0, rel: 4, clim: 0 },   ref: { not: -4, ind: 0, rel: -6, clim: 0 } },
+  nuance:     { acc: { not: 0, ind: -3, rel: 3, clim: -1 }, ref: { not: 1, ind: 3, rel: -4, clim: 1 } },
+  langage:    { acc: { not: -1, ind: -6, rel: 4, clim: -2 }, ref: { not: 3, ind: 5, rel: -7, clim: 2 } },
+  caviardage: { acc: { not: -3, ind: -9, rel: 5, clim: -3 }, ref: { not: 5, ind: 8, rel: -10, clim: 4 } },
+  inversion:  { acc: { not: -5, ind: -13, rel: 5, clim: -3 }, ref: { not: 7, ind: 10, rel: -12, clim: 5 } }
+};
+
+var KIND_LABEL = {
+  correction: "rectification factuelle",
+  nuance: "adoucissement",
+  langage: "éléments de langage",
+  caviardage: "caviardage",
+  inversion: "retournement du sens"
+};
+
+var PEOPLE = [
+  {
+    id: "marchetti", name: "Hélène Marchetti", role: "ministre de l’Économie et des Finances", party: "Parti du Progrès, majorité",
+    demands: true, touchy: false,
+    blurb: "Rompue à l’exercice. Ne donne jamais un entretien sans le relire.",
+    qa: [
+      { q: "Le déficit dépassera-t-il 5 % cette année ?", a: "Oui, nous serons autour de 5,4 %. Les prévisions de printemps étaient trop optimistes, et nous le savions dès juin." },
+      { q: "Pourquoi la taxe sur les carburants augmente-t-elle, contre la promesse de campagne ?", a: "Parce qu’aucun autre levier n’était assez rapide. J’ai plaidé contre en conseil des ministres, j’ai perdu l’arbitrage." },
+      { q: "Le chiffre de 12 000 suppressions de postes publics est-il exact ?", a: "Oui : 12 000 postes d’ici 2029, dont 3 000 dans les hôpitaux." },
+      { q: "Aspirez-vous à devenir Première ministre ?", a: "Je ne dis jamais non quand on me demande de servir. La Première ministre le sait." }
+    ],
+    note: "Cher confrère, quelques ajustements de pure forme. Bien cordialement, H. M.",
+    changes: [
+      { i: 0, kind: "langage", alt: "Nous maîtrisons la trajectoire de nos finances publiques, dans un contexte international exigeant.", margin: "Les chiffres de fin d’année ne sont pas arrêtés, je préfère ne pas m’avancer." },
+      { i: 1, kind: "caviardage", alt: "Parce que c’est une décision collective, pleinement assumée par l’ensemble du gouvernement.", margin: "Les délibérations du conseil sont confidentielles." },
+      { i: 2, kind: "correction", alt: "Oui : 12 000 postes d’ici 2029, dont 3 000 dans les services administratifs des hôpitaux, pas parmi les soignants.", margin: "Précision nécessaire : « hôpitaux » prêtait à confusion." },
+      { i: 3, kind: "nuance", alt: "Je suis entièrement concentrée sur ma mission au sein du gouvernement.", margin: "Je ne souhaite pas alimenter les spéculations." }
+    ],
+    key: 1,
+    headHard: "Taxe carburants : la ministre des Finances avait plaidé contre",
+    headSoft: "Finances publiques : Hélène Marchetti défend la ligne du gouvernement",
+    react: {
+      warm: "Le cabinet de Mme Marchetti vous remercie d’un mot chaleureux. Vous serez prévenu en premier de ses prochaines annonces.",
+      neutral: "Pas de réaction du ministère. Poli, distant.",
+      cold: "Le directeur de cabinet de Mme Marchetti vous fait savoir que la ministre « n’a pas de disponibilité » dans les prochains mois."
+    }
+  },
+  {
+    id: "aubrac", name: "Gaspard Aubrac", role: "chef de l’opposition", party: "Union Nationale Populaire",
+    demands: false, touchy: true,
+    blurb: "Tribun. N’exige rien, mais supporte mal qu’on ne lui propose pas de relire.",
+    qa: [
+      { q: "Votre plan d’économies annonce 40 milliards. Où les trouvez-vous ?", a: "Dans la fraude, dans les niches fiscales, dans la rationalisation. Honnêtement, nous n’avons chiffré que 22 milliards pour l’instant." },
+      { q: "Vous promettez de baisser la taxe carburants, mais votre parti l’a créée en 2019.", a: "C’était une erreur, je l’ai dit à l’époque. Je préfère l’assumer que la défendre." },
+      { q: "Votre campagne a reçu 300 000 € de l’armateur Brasseur.", a: "Un don déclaré, légal, plafonné. Mais je reconnais que le moment est mal choisi : Brasseur a ensuite obtenu le marché du port." },
+      { q: "Que feriez-vous de la Première ministre ?", a: "Je la remercierais, poliment. Elle a fait de son mieux avec ce qu’elle avait." }
+    ],
+    note: "Je me suis permis de retoucher deux ou trois passages : la formulation m’a semblé imprécise. G. A.",
+    changes: [
+      { i: 0, kind: "caviardage", alt: "Dans la fraude, dans les niches fiscales, dans la rationalisation. Notre programme est entièrement financé.", margin: "Vous n’allez pas citer un chiffre de travail, enfin." },
+      { i: 2, kind: "inversion", alt: "Un don déclaré, légal, plafonné. Il n’existe aucun lien entre ce don et le marché du port, et je l’affirme.", margin: "Ma pensée a été mal retranscrite." },
+      { i: 3, kind: "nuance", alt: "Je respecte son action ; le pays a besoin d’alternance.", margin: "Je ne voudrais pas être condescendant.", tense: true }
+    ],
+    key: 2,
+    headHard: "Don de l’armateur Brasseur : Aubrac reconnaît un moment « mal choisi »",
+    headSoft: "Aubrac : « Aucun lien » entre un don d’armateur et le marché du port",
+    react: {
+      warm: "Aubrac vous écrit : « Vous êtes l’un des rares à nous prendre au sérieux. Ma porte vous est ouverte. »",
+      neutral: "Aucune nouvelle d’Aubrac. Ni remerciement, ni reproche.",
+      cold: "Aubrac vous attaque sur les réseaux : « Le Courrier a choisi son camp. » Il ne répondra plus à vos appels."
+    }
+  },
+  {
+    id: "karadec", name: "Inès Karadec", role: "présidente de la commission d’enquête sur le barrage de Hautecombe", party: "Alliance Citoyenne",
+    demands: false, touchy: false,
+    blurb: "Magistrate de formation. Précise, rarement mécontente d’un verbatim.",
+    qa: [
+      { q: "Que révèle votre rapport sur le barrage ?", a: "Que la maintenance a été reportée trois années de suite pour économiser 14 millions d’euros." },
+      { q: "Y a-t-il une faute individuelle ?", a: "Le directeur de l’agence de l’eau, M. Lefort, a signé les reports. Il a été entendu trois fois et a varié dans ses réponses." },
+      { q: "Le ministre de tutelle savait-il ?", a: "Il a reçu une note d’alerte en février. Il dit ne pas l’avoir lue. À lui d’en tirer les conséquences." },
+      { q: "Quand rendrez-vous les conclusions publiques ?", a: "Le 15 décembre. Et je ne laisserai personne retarder cette date." }
+    ],
+    note: "Quelques précisions que la procédure en cours m’impose. I. K.",
+    changes: [
+      { i: 0, kind: "correction", alt: "Que la maintenance a été reportée deux années de suite pour économiser 14 millions d’euros.", margin: "Erreur de ma part : le contrôle de 2023 a bien eu lieu, voir page 41 du rapport." },
+      { i: 1, kind: "nuance", alt: "Plusieurs décisions de report portent la signature de la direction de l’agence ; les auditions sont en cours d’analyse.", margin: "Prudence juridique : la procédure est ouverte." }
+    ],
+    key: 1,
+    headHard: "Barrage de Hautecombe : le directeur de l’agence de l’eau a signé les reports",
+    headSoft: "Barrage de Hautecombe : la commission poursuit l’analyse des auditions",
+    react: {
+      warm: "Mme Karadec vous remercie par courriel et vous réservera la primeur des conclusions de la commission.",
+      neutral: "Mme Karadec accuse réception, sans commentaire.",
+      cold: "Mme Karadec fait savoir à votre rédaction qu’elle ne vous accordera plus d’entretien avant la publication du rapport."
+    }
+  },
+  {
+    id: "delorme", name: "Maurice Delorme", role: "maire de Port-Lumière", party: "divers gauche",
+    demands: true, touchy: false,
+    blurb: "Populaire et bavard. Relit toujours, ajoute souvent.",
+    qa: [
+      { q: "Le permis de la tour Océane a été accordé à votre beau-frère.", a: "Il l’a obtenu en six semaines au lieu de six mois. Je ne m’en vante pas." },
+      { q: "Les loyers ont augmenté de 18 % en deux ans. Que faites-vous ?", a: "J’encadrerai les loyers dès janvier, même si la préfecture me contestera devant le tribunal." },
+      { q: "Port-Lumière est-elle sûre ?", a: "Plus qu’on ne le dit, moins qu’on ne le voudrait. Les chiffres de la police municipale sont à peu près bons ; ceux du ministère ont six mois de retard." },
+      { q: "Serez-vous candidat à un troisième mandat ?", a: "Oui, en mars 2027, et je gagnerai." }
+    ],
+    note: "Ah, j’ai un peu réécrit, ce n’était pas tout à fait ce que j’avais en tête ! Merci, Maurice.",
+    changes: [
+      { i: 0, kind: "caviardage", alt: "Le dossier a été instruit selon la procédure habituelle, comme tous les autres.", margin: "Mon beau-frère est un citoyen comme un autre." },
+      { i: 1, kind: "nuance", alt: "Je prendrai les mesures nécessaires pour protéger les locataires, dans le respect de la loi.", margin: "Le préfet m’a appelé ce matin.", tense: true },
+      { i: 2, kind: "langage", alt: "Port-Lumière est une ville sûre, grâce à l’action déterminée de la municipalité et de ses agents.", margin: "Il faut aussi rendre hommage aux policiers municipaux." },
+      { i: 3, kind: "correction", alt: "Oui, en mars 2028, et je gagnerai.", margin: "Erreur de date : le scrutin est en 2028." }
+    ],
+    key: 0,
+    headHard: "Tour Océane : le maire reconnaît un permis express pour son beau-frère",
+    headSoft: "Tour Océane : le maire assure que la procédure a été respectée",
+    react: {
+      warm: "Delorme vous invite à déjeuner à la mairie : « Le Courrier est chez lui à Port-Lumière. »",
+      neutral: "Delorme ne dit rien. La mairie continue d’envoyer ses communiqués, comme à tout le monde.",
+      cold: "La mairie retire votre rédaction de la liste d’invitation de ses conférences de presse."
+    }
+  },
+  {
+    id: "brandt", name: "Sofia Brandt", role: "ministre de l’Intérieur", party: "Parti du Progrès, majorité",
+    demands: true, touchy: false,
+    blurb: "Ferme. Vous renverra le verbatim largement annoté.",
+    qa: [
+      { q: "Combien de manifestants ont été blessés la semaine dernière ?", a: "Cent quarante-deux blessés, dont onze graves. Le chiffre de 87 donné par la préfecture était faux." },
+      { q: "Une enquête interne est-elle ouverte sur le tir de LBD qui a éborgné un lycéen ?", a: "Oui, ouverte hier. Je veux la vérité, quelles que soient les conclusions." },
+      { q: "Le préfet de police a-t-il votre confiance ?", a: "Pour l’instant, oui. Mais je lui ai demandé des explications écrites." },
+      { q: "Faut-il interdire les manifestations en centre-ville ?", a: "Non. Interdire, c’est déplacer le problème." }
+    ],
+    note: "Merci de tenir compte des modifications ci-jointes. Le ministère se réserve le droit de contester toute publication non conforme.",
+    changes: [
+      { i: 0, kind: "inversion", alt: "Quatre-vingt-sept blessés, selon le chiffre de la préfecture, qui fait foi.", margin: "Le chiffre de 142 n’est pas consolidé." },
+      { i: 1, kind: "langage", alt: "Une procédure de vérification est en cours, conformément aux usages.", margin: "Le terme « enquête » a une portée juridique précise." },
+      { i: 2, kind: "caviardage", alt: "Le préfet a toute ma confiance.", margin: "Inutile de fragiliser un haut fonctionnaire." }
+    ],
+    key: 0,
+    headHard: "Manifestations : 142 blessés, dont onze graves, selon la ministre de l’Intérieur",
+    headSoft: "Manifestations : la ministre de l’Intérieur s’en tient au bilan de la préfecture",
+    react: {
+      warm: "Le ministère de l’Intérieur vous ajoute à la liste des journalistes qu’il informe en priorité.",
+      neutral: "Le cabinet de Mme Brandt accuse réception. Sans plus.",
+      cold: "Mme Brandt réclame publiquement un « droit de réponse » et cesse de vous recevoir."
+    }
+  },
+  {
+    id: "moreau", name: "Lila Moreau", role: "députée écologiste, 29 ans", party: "Les Verts de Valmeria",
+    demands: false, touchy: false,
+    blurb: "Jeune élue, peu habituée à la presse. Corrige surtout des détails.",
+    qa: [
+      { q: "Qu’attendez-vous de la loi climat ?", a: "Qu’elle interdise les vols intérieurs quand le train met moins de quatre heures, d’ici 2028." },
+      { q: "Votre groupe votera-t-il le budget ?", a: "Pas en l’état. Nous voterons contre si le fonds pour la rénovation thermique est supprimé." },
+      { q: "Vous avez voyagé en jet privé en juillet.", a: "Oui, une fois, pour un meeting. Je n’ai aucune bonne excuse, c’était une erreur." },
+      { q: "Que pensez-vous de la Première ministre ?", a: "Elle écoute, c’est rare. Mais elle cède toujours au dernier qui parle." }
+    ],
+    note: "Désolée, j’ai corrigé des choses, je ne suis pas très à l’aise… Lila",
+    changes: [
+      { i: 0, kind: "correction", alt: "Qu’elle interdise les vols intérieurs quand le train met moins de trois heures, d’ici 2028.", margin: "C’est trois heures dans l’amendement déposé, j’ai confondu." },
+      { i: 1, kind: "langage", alt: "Nous examinerons le budget avec attention et en responsabilité.", margin: "Je ne veux pas fermer la porte avant la négociation." },
+      { i: 2, kind: "inversion", alt: "J’ai pris un vol commercial pour me rendre à un événement.", margin: "Mon groupe m’a demandé de rectifier.", tense: true },
+      { i: 3, kind: "nuance", alt: "Elle fait preuve d’une vraie capacité d’écoute.", margin: "Je ne voudrais pas que cela passe pour une attaque personnelle." }
+    ],
+    key: 1,
+    headHard: "Budget : les écologistes voteront contre si la rénovation thermique est supprimée",
+    headSoft: "Budget : les écologistes examineront le texte « avec attention »",
+    react: {
+      warm: "Lila Moreau vous remercie pour votre bienveillance. Elle vous glissera désormais ses informations avant les autres.",
+      neutral: "Lila Moreau ne réagit pas. Elle apprend vite.",
+      cold: "Lila Moreau est blessée. Son groupe vous classe désormais parmi les journalistes à éviter."
+    }
+  }
+];
+
+var PM = {
+  id: "pm", name: "Anne-Cécile Dorval", role: "Première ministre", party: "Parti du Progrès, majorité",
+  demands: true, touchy: false,
+  blurb: "Le grand entretien. Elle ne le donne qu’à ceux qui lui laissent la main sur la relecture.",
+  qa: [
+    { q: "Votre gouvernement a-t-il menti sur le déficit ?", a: "Nous avons été trop optimistes. Je l’ai dit au conseil des ministres, et j’aurais dû le dire plus tôt aux Valmériens." },
+    { q: "Le rapport sur le barrage mettra-t-il en cause un ministre ?", a: "Si un ministre a failli, il partira. Je n’attendrai pas la fin de la procédure." },
+    { q: "Demanderez-vous la confiance à l’Assemblée ?", a: "Oui, avant Noël. Je n’aime pas gouverner à la corde." },
+    { q: "Gaspard Aubrac dit que vous ne tiendrez pas six mois.", a: "Il le dit depuis trois ans. J’ai appris à ne pas lui répondre." },
+    { q: "Un mot pour les lecteurs ?", a: "Qu’ils exigent des comptes à chacun d’entre nous, y compris à moi." }
+  ],
+  note: "Quelques modifications de mon cabinet. Elles reflètent ma pensée ; je compte sur votre compréhension.",
+  changes: [
+    { i: 0, kind: "caviardage", alt: "Nos prévisions ont toujours été établies de bonne foi.", margin: "Le mot « trop » sera instrumentalisé par l’opposition." },
+    { i: 1, kind: "caviardage", alt: "Il faut laisser la justice travailler. Je ne ferai aucun commentaire.", margin: "Je ne peux pas préjuger de la procédure." },
+    { i: 2, kind: "correction", alt: "Oui, avant la mi-janvier. Je n’aime pas gouverner à la corde.", margin: "Le calendrier parlementaire a changé hier soir." },
+    { i: 3, kind: "nuance", alt: "Je respecte l’opposition.", margin: "Je ne veux pas personnaliser le débat." }
+  ],
+  key: 0,
+  headHard: "Déficit : la Première ministre reconnaît que le gouvernement a été trop optimiste",
+  headSoft: "Première ministre : le gouvernement défend ses prévisions",
+  react: {
+    warm: "Le cabinet de la Première ministre vous remercie. Elle vous recevra de nouveau.",
+    neutral: "Le cabinet de la Première ministre prend acte. Rien de plus.",
+    cold: "Le cabinet de la Première ministre fait savoir que cet entretien était le dernier."
+  }
+};
+
+/* ---------- État ---------- */
+
+var S;
+var NAMES = { not: "Notoriété", ind: "Indépendance", rel: "Relations", clim: "Climat" };
+var PM_THRESHOLD = 35;
+var TENSE_THRESHOLD = 60;
+
+function newGame() {
+  S = {
+    screen: "intro",
+    g: { not: 30, ind: 50, rel: 50, clim: 40 },
+    round: 0,
+    rounds: 4,
+    pool: PEOPLE.map(function (p) { return p.id; }),
+    cur: null,
+    stats: {}
+  };
+  Object.keys(EFF).forEach(function (k) { S.stats[k] = { acc: 0, ref: 0 }; });
+}
+
+/* ---------- Utilitaires ---------- */
+
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+function sgn(n) { return n > 0 ? "+" + n : n < 0 ? "−" + Math.abs(n) : "0"; }
+function clamp(v) { return Math.max(0, Math.min(100, v)); }
+function rnd(v) { return Math.round(v) || 0; }
+function findP(id) { return id === "pm" ? PM : PEOPLE.filter(function (p) { return p.id === id; })[0]; }
+function add(a, b) { Object.keys(b).forEach(function (k) { a[k] = (a[k] || 0) + b[k]; }); }
+function isTense() { return S.g.clim >= TENSE_THRESHOLD; }
+
+function applyDelta(d) {
+  var before = {};
+  Object.keys(S.g).forEach(function (k) { before[k] = S.g[k]; });
+  Object.keys(d).forEach(function (k) { S.g[k] = clamp(S.g[k] + d[k]); });
+  var real = {};
+  Object.keys(S.g).forEach(function (k) { real[k] = S.g[k] - before[k]; });
+  return real;
+}
+
+function deltaLine(real) {
+  return ["not", "ind", "rel", "clim"].map(function (k) { return NAMES[k] + " " + sgn(real[k] || 0); }).join(",  ");
+}
+
+function gaugesHTML() {
+  if (S.screen === "intro") { return ""; }
+  return '<div class="gauges" role="group" aria-label="Indicateurs">' + ["not", "ind", "rel", "clim"].map(function (k) {
+    var v = S.g[k], f = Math.round(v / 10);
+    return '<div class="g"><span class="gl">' + NAMES[k] + '</span><span class="gb">' + "█".repeat(f) + "░".repeat(10 - f) + '</span><span class="gv">' + v + '</span></div>';
+  }).join("") + "</div>";
+}
+
+function pubText(c, i) {
+  if (c.sent) {
+    var ch = c.changes.filter(function (x) { return x.i === i; })[0];
+    if (ch && c.dec[ch.i] === "acc") { return ch.alt; }
+  }
+  return c.p.qa[i].a;
+}
+
+/* ---------- Actions ---------- */
+
+function start() { S.screen = "pick"; render(); }
+
+function pick(id) {
+  var p = findP(id);
+  S.cur = { p: p, mustSend: false, sent: false, changes: [], dec: {}, real: null, relPers: 0, hard: true };
+  S.screen = p.demands ? "condition" : "interview";
+  render();
+}
+
+function acceptCond() { S.cur.mustSend = true; S.screen = "interview"; render(); }
+
+function declineCond() {
+  S.cur.real = applyDelta({ not: -2, ind: 0, rel: -4, clim: 0 });
+  S.screen = "declined";
+  render();
+}
+
+function sendVerbatim() {
+  var c = S.cur;
+  c.sent = true;
+  c.changes = c.p.changes.filter(function (ch) { return !ch.tense || isTense(); });
+  S.screen = "relecture";
+  render();
+}
+
+function noSend() { S.cur.sent = false; finish(); }
+
+function decide(i, choice) { S.cur.dec[i] = choice; render(false); }
+
+function finish() {
+  var c = S.cur, p = c.p;
+  var tot = { not: 0, ind: 0, rel: 0, clim: 0 };
+  var relPers = 0;
+
+  if (c.sent) {
+    c.changes.forEach(function (ch) {
+      var d = c.dec[ch.i];
+      var e = EFF[ch.kind][d];
+      add(tot, e);
+      relPers += e.rel;
+      S.stats[ch.kind][d]++;
+    });
+  } else {
+    p.changes.filter(function (ch) { return !ch.tense; }).forEach(function (ch) {
+      var e = EFF[ch.kind].ref, h = {};
+      Object.keys(e).forEach(function (k) { h[k] = rnd(e[k] * 0.5); });
+      add(tot, h);
+      relPers += h.rel;
+    });
+    if (p.touchy) { tot.rel -= 5; relPers -= 5; }
+  }
+
+  var keyChange = c.sent ? c.changes.filter(function (x) { return x.i === p.key; })[0] : null;
+  c.hard = !(keyChange && c.dec[p.key] === "acc");
+  add(tot, c.hard ? { not: 3, ind: 0, rel: 0, clim: 2 } : { not: 0, ind: 0, rel: 0, clim: -1 });
+
+  c.relPers = relPers;
+  c.real = applyDelta(tot);
+  S.screen = "recap";
+  render();
+}
+
+function advance() {
+  var c = S.cur;
+  if (c.p.id === "pm") { S.screen = "end"; render(); return; }
+  S.pool = S.pool.filter(function (x) { return x !== c.p.id; });
+  S.round++;
+  if (S.round < S.rounds) { S.screen = "pick"; }
+  else if (S.g.rel >= PM_THRESHOLD) { S.screen = "pmintro"; }
+  else { S.screen = "locked"; }
+  render();
+}
+
+function restart() { newGame(); render(); }
+
+/* ---------- Écrans ---------- */
+
+function ending() {
+  var g = S.g;
+  var t, d;
+  if (g.ind <= 35 && g.rel >= 55) {
+    t = "Le porte-voix";
+    d = "Vous êtes le journaliste que tout le monde veut avoir au téléphone. Les cabinets vous disent tout, et ils savent d’avance ce que vous écrirez. Vos articles ressemblent de plus en plus à des communiqués bien rédigés.";
+  } else if (g.ind <= 35) {
+    t = "Le greffier";
+    d = "Vous avez tout laissé passer, sans même y gagner la confiance de ceux que vous ménagiez. Vos articles sont lisibles, polis et interchangeables.";
+  } else if (g.ind >= 65 && g.rel < 30) {
+    t = "Seul contre tous";
+    d = "Vos papiers font du bruit, et personne ne vous répond plus. Vous avez gagné une réputation d’intransigeance. Il vous reste à trouver comment travailler sans sources.";
+  } else if (g.ind >= 65 && g.not >= 50) {
+    t = "Le contre-pouvoir";
+    d = "On vous craint, on vous cite, on vous invite quand même. Vos relectures sont des négociations et vos articles font l’actualité. C’est un équilibre rare, et fragile.";
+  } else if (g.ind >= 65) {
+    t = "L’intègre discret";
+    d = "Vous avez tenu vos principes et gardé vos sources, mais sans éclat. Vos confrères vous respectent, le grand public ne connaît pas votre nom.";
+  } else {
+    t = "L’équilibriste";
+    d = "Vous avez accepté ce qui était juste, refusé ce qui ne l’était pas, et parfois cédé pour garder une porte ouverte. Personne ne vous trouve tout à fait commode, ni tout à fait hostile.";
+  }
+  var c = g.clim >= 70 ? "Le pays est à cran : les relectures sont devenues des armes et chaque article se lit comme une prise de position."
+        : g.clim <= 30 ? "Le débat public s’est apaisé, peut-être trop : on se demande si les journaux posent encore les questions qui fâchent."
+        : "Le climat politique reste tendu sans être explosif.";
+  return { title: t, text: d, climate: c };
+}
+
+function view() {
+  var h = "", c = S.cur, p = c && c.p, i;
+
+  if (S.screen === "intro") {
+    h += "<p>Vous êtes journaliste politique au <i>Courrier de Valmeria</i>, dans un pays fictif dont la vie publique n’a rien à envier à la nôtre.</p>";
+    h += "<p>Vous menez quatre entretiens avec des responsables politiques, de quatre à cinq questions chacun. Parfois, l’interviewé exige de relire ses propos avant parution ; parfois, c’est à vous de décider de lui envoyer le verbatim.</p>";
+    h += "<p>Le texte revient tel quel, légèrement corrigé, reformulé, caviardé ou retourné. À vous de trancher, réponse par réponse : garder l’original ou retenir la version amendée. Une rectification d’erreur n’est pas un caviardage, mais personne ne vous dit laquelle est laquelle.</p>";
+    h += '<p>Quatre jauges suivent vos choix :</p><div class="card small">';
+    h += "<b>Notoriété</b> : l’attention que vos articles reçoivent.<br>";
+    h += "<b>Indépendance</b> : ce qui vous distingue d’un service de communication.<br>";
+    h += "<b>Relations</b> : l’accès que vos sources vous accordent encore.<br>";
+    h += "<b>Climat</b> : la tension politique. Quand elle monte, les relectures reviennent plus chargées.";
+    h += "</div>";
+    h += '<div class="row"><button onclick="start()">Commencer</button></div>';
+  }
+
+  else if (S.screen === "pick") {
+    h += "<h2>Entretien " + (S.round + 1) + " sur " + S.rounds + "</h2>";
+    h += '<p class="small">Si vos relations le permettent, un grand entretien avec la Première ministre pourrait suivre.</p>';
+    if (isTense()) { h += '<p class="warn">Le climat politique est tendu : attendez-vous à des relectures plus lourdes.</p>'; }
+    h += "<p>Qui voulez-vous interviewer ?</p>";
+    S.pool.forEach(function (id) {
+      var q = findP(id);
+      h += '<div class="card"><b>' + esc(q.name) + "</b>, " + esc(q.role) + " (" + esc(q.party) + ")";
+      h += "<br>" + esc(q.blurb);
+      h += '<br><span class="small">' + (q.demands ? "Exige de relire avant parution." : "Ne pose pas de condition.") + "</span>";
+      h += '<div class="row"><button onclick="pick(\'' + q.id + '\')">Interviewer ' + esc(q.name) + "</button></div></div>";
+    });
+  }
+
+  else if (S.screen === "pmintro") {
+    h += "<h2>Le grand entretien</h2>";
+    h += "<p>Vos relations avec le monde politique sont restées assez bonnes pour que la Première ministre vous reçoive.</p>";
+    h += '<div class="row"><button onclick="pick(\'pm\')">Se rendre à l’entretien</button></div>';
+  }
+
+  else if (S.screen === "locked") {
+    h += "<h2>Une porte reste fermée</h2>";
+    h += "<p>Vous avez demandé un entretien à la Première ministre. Son cabinet n’a pas répondu. Il a transmis une phrase à votre rédaction : « La Première ministre n’a pas de créneau dans son agenda. »</p>";
+    h += '<div class="row"><button onclick="S.screen=\'end\';render()">Faire le bilan</button></div>';
+  }
+
+  else if (S.screen === "condition") {
+    h += "<h2>" + esc(p.name) + "</h2>";
+    h += "<p>" + esc(p.name[0] === "A" ? "La Première ministre" : p.name) + " accepte de vous parler, à une condition : relire l’intégralité du verbatim avant parution.</p>";
+    h += '<div class="row"><button onclick="acceptCond()">Accepter la condition</button><button onclick="declineCond()">Refuser et renoncer à l’entretien</button></div>';
+  }
+
+  else if (S.screen === "declined") {
+    h += "<h2>Pas d’entretien</h2>";
+    h += "<p>Vous avez refusé la condition. L’entretien n’a pas lieu, et le cabinet de " + esc(p.name) + " a pris note.</p>";
+    h += '<p class="delta">' + deltaLine(c.real) + "</p>";
+    h += '<div class="row"><button onclick="advance()">Continuer</button></div>';
+  }
+
+  else if (S.screen === "interview") {
+    h += "<h2>Entretien avec " + esc(p.name) + "</h2>";
+    h += '<p class="small">' + esc(p.role) + ", " + esc(p.party) + ". Verbatim de l’entretien :</p>";
+    for (i = 0; i < p.qa.length; i++) {
+      h += '<p class="q">' + esc(p.qa[i].q) + '</p><p class="a">' + esc(p.qa[i].a) + "</p>";
+    }
+    if (c.mustSend) {
+      h += "<p>Vous avez promis la relecture. Le verbatim part ce soir.</p>";
+      h += '<div class="row"><button onclick="sendVerbatim()">Envoyer le verbatim pour relecture</button></div>';
+    } else {
+      h += "<p>" + esc(p.name) + " n’a pas demandé à relire. Que faites-vous ?</p>";
+      h += '<div class="row"><button onclick="sendVerbatim()">Envoyer le verbatim pour relecture</button><button onclick="noSend()">Publier sans l’envoyer</button></div>';
+    }
+  }
+
+  else if (S.screen === "relecture") {
+    h += "<h2>Le verbatim revient</h2>";
+    h += '<p class="small">Message de ' + esc(p.name) + " :</p>";
+    h += '<p class="margin">« ' + esc(p.note) + " »</p>";
+    var done = 0;
+    for (i = 0; i < p.qa.length; i++) {
+      var ch = c.changes.filter(function (x) { return x.i === i; })[0];
+      h += '<p class="q">' + esc(p.qa[i].q) + "</p>";
+      if (!ch) {
+        h += '<p class="a">' + esc(p.qa[i].a) + '</p><p class="small">Inchangé.</p>';
+      } else {
+        var d = c.dec[ch.i];
+        if (d) { done++; }
+        h += '<div class="orig"><span class="lbl">Votre verbatim</span>' + esc(p.qa[i].a) + "</div>";
+        h += '<div class="alt"><span class="lbl">Version retournée</span>' + esc(ch.alt) + "</div>";
+        h += '<p class="margin">En marge : ' + esc(ch.margin) + "</p>";
+        h += '<div class="row"><button class="' + (d === "ref" ? "sel" : "") + '" onclick="decide(' + ch.i + ',\'ref\')">Maintenir l’original</button>';
+        h += '<button class="' + (d === "acc" ? "sel-pen" : "") + '" onclick="decide(' + ch.i + ',\'acc\')">Retenir la version amendée</button></div>';
+      }
+    }
+    var total = c.changes.length;
+    if (total === 0) {
+      h += "<p>Rien n’a été modifié.</p>";
+      h += '<div class="row"><button onclick="finish()">Publier</button></div>';
+    } else {
+      h += '<p class="small">' + done + " décision(s) sur " + total + ".</p>";
+      h += '<div class="row"><button ' + (done < total ? "disabled" : "") + ' onclick="finish()">Publier l’article</button></div>';
+    }
+  }
+
+  else if (S.screen === "recap") {
+    h += "<h2>Publié</h2>";
+    h += '<p class="headline">' + esc(c.hard ? p.headHard : p.headSoft) + "</p>";
+    for (i = 0; i < p.qa.length; i++) {
+      h += '<p class="q">' + esc(p.qa[i].q) + '</p><p class="a">' + esc(pubText(c, i)) + "</p>";
+    }
+    h += "<h2>Ce qui s’est passé</h2>";
+    if (c.sent && c.changes.length) {
+      h += '<ul class="recap">';
+      c.changes.forEach(function (ch) {
+        var what = KIND_LABEL[ch.kind];
+        var dd = c.dec[ch.i] === "acc" ? "Vous avez retenu la version amendée" : "Vous avez maintenu l’original";
+        h += "<li>Question " + (ch.i + 1) + " : " + what + ". " + dd + ".</li>";
+      });
+      h += "</ul>";
+    } else if (!c.sent) {
+      h += "<p>Vous avez publié sans relecture. " + esc(p.name) + " a découvert l’article en même temps que les lecteurs.</p>";
+    } else {
+      h += "<p>Le verbatim est revenu inchangé.</p>";
+    }
+    h += '<p class="delta">' + deltaLine(c.real) + "</p>";
+    var rr = c.relPers >= 3 ? p.react.warm : c.relPers <= -6 ? p.react.cold : p.react.neutral;
+    h += '<p class="reaction">' + esc(rr) + "</p>";
+    h += '<div class="row"><button onclick="advance()">Continuer</button></div>';
+  }
+
+  else if (S.screen === "end") {
+    var e = ending();
+    h += "<h2>Bilan : " + esc(e.title) + "</h2>";
+    h += "<p>" + esc(e.text) + "</p><p>" + esc(e.climate) + "</p>";
+    h += "<h2>Vos arbitrages</h2><ul class=\"recap\">";
+    Object.keys(S.stats).forEach(function (k) {
+      var s = S.stats[k];
+      if (s.acc + s.ref > 0) {
+        h += "<li>" + KIND_LABEL[k].charAt(0).toUpperCase() + KIND_LABEL[k].slice(1) + " : " + s.acc + " retenu(s), " + s.ref + " écarté(s).</li>";
+      }
+    });
+    h += "</ul>";
+    h += '<div class="row"><button onclick="restart()">Rejouer</button></div>';
+  }
+
+  return h;
+}
+
+function render(scrollTop) {
+  $("gauges").innerHTML = gaugesHTML();
+  $("app").innerHTML = view();
+  if (scrollTop !== false) { window.scrollTo(0, 0); }
+}
+
+newGame();
+render();
+</script>
+</body>
+</html>
